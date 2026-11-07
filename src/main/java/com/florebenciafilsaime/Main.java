@@ -6,6 +6,9 @@ import com.florebenciafilsaime.functionalinterface.Printable;
 import com.florebenciafilsaime.functionalinterface.Retrievable;
 import com.florebenciafilsaime.misc.Person;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -64,9 +67,34 @@ public class Main {
         //do the same thing using a function
         Function<Integer, String> function = (number) -> "Number is: " + number;
         System.out.println("What is the mystery number? " + function.apply(25));
+
+        List<Person> people = getPeople();
+        //sort based on age
+        //people.sort((person, person2) -> person.age() - person2.age());
+        people.sort(Comparator.comparingInt(Person::age));
+        people.forEach(person -> System.out.println(person.name()+"'s age is " + person.age()));
+
+        //sort based on name
+        people.sort(Comparator.comparing(Person::name));
+        System.out.println("Printing names in order: ");
+        people.forEach(person -> System.out.println(person.name()));
+
+        // sort based n height
+        people.sort(Comparator.comparing(Person::height));
+        System.out.println("Sorting by height: ");
+        people.forEach(person -> System.out.println(person.name() + "'s height is " + person.height()));
     }
 
     public static <T> boolean check(T tObject, Predicate<T> predicate) {
         return predicate.test(tObject);
+    }
+
+    private static List<Person> getPeople() {
+        List<Person> result = new ArrayList<>();
+        result.add(new Person( 33, "Mike",1.8));
+        result.add(new Person( 25, "Mary",1.4));
+        result.add(new Person( 34, "Alan",1.7));
+        result.add(new Person( 30, "Zoe",1.5));
+        return result;
     }
 }
